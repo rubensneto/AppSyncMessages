@@ -37,14 +37,7 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
            return collectionView.dequeueReusableCell(withReuseIdentifier: searchCellId, for: indexPath)
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: conversationCellId, for: indexPath) as! ConversationCell
-        let message = dataSource.messages[indexPath.row - 1]
-        cell.nameLabel.text = message.sender.name
-        cell.messagePreviewLabel.text = message.text
-        //cell.timestampLabel.text = message.timestamp
-        if message.sender.isOnline {
-            cell.onlineIndicatorView.alpha = 1
-        }
-        cell.profileImageView.image = message.sender.profileImage!
+        cell.message = dataSource.messages[indexPath.row - 1] as! Message
         return cell
     }
     

@@ -7,23 +7,23 @@
 //
 
 import UIKit
-
-class ApiMessage: NSObject {
-    var id: Int!
-    var text: String?
-    var image: UIImage?
-    var timestamp: Date!
-    var sender: Profile!
-}
-
-class Profile: NSObject {
-    var id: Int!
-    var name: String!
-    var profileImage: UIImage!
-    var isOnline = false
-}
+import CoreData
 
 class ConversationCell: T101Cell {
+    
+    var message: Message! {
+        didSet{
+            let profile = message.profile!
+            onlineIndicatorView.alpha = (profile.isOnline) ? 1 : 0
+            profileImageView.image = UIImage(data: profile.profileImage!)
+            nameLabel.text = profile.name
+            messagePreviewLabel.text = message.text
+            let formatter = DateFormatter()
+            formatter.dateFormat = "hh:mm"
+            timestampLabel.text = formatter.string(from: message.timestamp!)
+            
+        }
+    }
     
     let onlineIndicatorView: UIView = {
         let view = UIView()
