@@ -8,6 +8,21 @@
 
 import UIKit
 
+class ApiMessage: NSObject {
+    var id: Int!
+    var text: String?
+    var image: UIImage?
+    var timestamp: Date!
+    var sender: Profile!
+}
+
+class Profile: NSObject {
+    var id: Int!
+    var name: String!
+    var profileImage: UIImage!
+    var isOnline = false
+}
+
 class ConversationCell: T101Cell {
     
     let onlineIndicatorView: UIView = {
@@ -15,6 +30,7 @@ class ConversationCell: T101Cell {
         view.layer.cornerRadius = 25
         view.layer.masksToBounds = true
         view.backgroundColor = .reconGreen
+        view.alpha = 0
         return view
     }()
     
@@ -53,7 +69,7 @@ class ConversationCell: T101Cell {
         return label
     }()
     
-    override func setupView(){
+    override func setupCellView(){
         self.layer.cornerRadius = 10
         backgroundColor = .reconDarkGray
         setupContainerView()
@@ -88,18 +104,3 @@ class ConversationCell: T101Cell {
     }
 }
 
-class T101Cell: UICollectionViewCell {
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setupView(){
-        backgroundColor = .darkGray
-    }
-}

@@ -10,13 +10,15 @@ import UIKit
 
 class ConversationsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    private let cellId = "cellId"
+    private let conversationCellId = "conversationCellId"
+    private let searchCellId = "searchCellId"
+    
+    let dataSource = ConversationsDataSource()
 
     //MARK: View Life Cicle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupNavigationLayout()
         setupCollectionViewLayout()
     }
@@ -24,20 +26,39 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
     //MARK: Collection View
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        if dataSource.messages.count > 0 {
+            return dataSource.messages.count + 1
+        }
+        return 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        if indexPath.row == 0 {
+           return collectionView.dequeueReusableCell(withReuseIdentifier: searchCellId, for: indexPath)
+        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: conversationCellId, for: indexPath) as! ConversationCell
+        let message = dataSource.messages[indexPath.row - 1]
+        cell.nameLabel.text = message.sender.name
+        cell.messagePreviewLabel.text = message.text
+        //cell.timestampLabel.text = message.timestamp
+        if message.sender.isOnline {
+            cell.onlineIndicatorView.alpha = 1
+        }
+        cell.profileImageView.image = message.sender.profileImage!
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.row == 0 {
+            return CGSize(width: view.frame.width, height: 55)
+        }
         return CGSize(width: view.frame.width - 20, height: 70)
     }
     
     func setupCollectionViewLayout(){
         collectionView?.backgroundColor = .black
-        collectionView?.register(ConversationCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(ConversationCell.self, forCellWithReuseIdentifier: conversationCellId)
+        collectionView?.register(SearchCell.self, forCellWithReuseIdentifier: searchCellId)
         collectionView?.alwaysBounceVertical = true
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 5
