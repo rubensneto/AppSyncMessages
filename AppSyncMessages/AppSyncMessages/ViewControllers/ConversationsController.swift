@@ -26,8 +26,8 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
     //MARK: Collection View
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if dataSource.messages.count > 0 {
-            return dataSource.messages.count + 1
+        if let count = dataSource.messages?.count {
+            return count + 1
         }
         return 0
     }
@@ -37,9 +37,19 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
            return collectionView.dequeueReusableCell(withReuseIdentifier: searchCellId, for: indexPath)
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: conversationCellId, for: indexPath) as! ConversationCell
-        cell.message = dataSource.messages[indexPath.row - 1] as! Message
+        if let message = dataSource.messages?[indexPath.row - 1] {
+            cell.message = message
+        }
+        
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let controller = MessagesCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        controller.profile = dataSource.messages![indexPath.row].profile!
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 {

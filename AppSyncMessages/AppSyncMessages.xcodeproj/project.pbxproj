@@ -24,6 +24,7 @@
 		D0AA6E8D20E25C380068B02B /* ConversationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8C20E25C380068B02B /* ConversationCellViewModel.swift */; };
 		D0AA6E8F20E272DE0068B02B /* ApiProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8E20E272DE0068B02B /* ApiProfile.swift */; };
 		D0AA6E9120E273200068B02B /* ApiMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E9020E273200068B02B /* ApiMessage.swift */; };
+		D0AA6E9E20E3E05B0068B02B /* MessagesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E9D20E3E05B0068B02B /* MessagesCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		D0AA6E8C20E25C380068B02B /* ConversationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCellViewModel.swift; sourceTree = "<group>"; };
 		D0AA6E8E20E272DE0068B02B /* ApiProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiProfile.swift; sourceTree = "<group>"; };
 		D0AA6E9020E273200068B02B /* ApiMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiMessage.swift; sourceTree = "<group>"; };
+		D0AA6E9D20E3E05B0068B02B /* MessagesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesCollectionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				D0AA6E4920E100780068B02B /* ConversationsController.swift */,
+				D0AA6E9D20E3E05B0068B02B /* MessagesCollectionViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0AA6E9E20E3E05B0068B02B /* MessagesCollectionViewController.swift in Sources */,
 				D0AA6E9120E273200068B02B /* ApiMessage.swift in Sources */,
 				D0AA6E4A20E100780068B02B /* ConversationsController.swift in Sources */,
 				D0AA6E8A20E255FF0068B02B /* ConversationsDataSource.swift in Sources */,

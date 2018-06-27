@@ -25,6 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let conversationsController = ConversationsController(collectionViewLayout: layout)
         
         window?.rootViewController = UINavigationController(rootViewController: conversationsController)
+        
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.clear], for: .normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.clear], for: UIControlState.highlighted)
+        
         return true
     }
 

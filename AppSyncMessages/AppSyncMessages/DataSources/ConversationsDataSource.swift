@@ -10,9 +10,12 @@ import UIKit
 import CoreData
 
 class ConversationsDataSource {
-    var messages = [NSManagedObject]()
+    var messages: [Message]? = [Message]()
     
     init(){
+        
+        clearDataFromLocalStorage()
+        
         guard let appDel = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDel.persistentContainer.viewContext
         let messageEntity = NSEntityDescription.entity(forEntityName: "Message", in: context)!
@@ -31,8 +34,6 @@ class ConversationsDataSource {
         luizMessage.profile = luiz
         luizMessage.timestamp = Date()
         
-        messages.append(luizMessage)
-        
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         let chris = NSManagedObject(entity: profileEntity, insertInto: context) as! Profile
@@ -47,8 +48,6 @@ class ConversationsDataSource {
         chrisMessage.text = "I can't, I have kids!!!"
         chrisMessage.profile = chris
         chrisMessage.timestamp = Date(timeInterval: -60, since: Date())
-        
-        messages.append(chrisMessage)
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
@@ -65,8 +64,6 @@ class ConversationsDataSource {
         brettMessage.profile = brett
         brettMessage.timestamp = Date(timeInterval: -120, since: Date())
         
-        messages.append(brettMessage)
-        
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         let rubens = NSManagedObject(entity: profileEntity, insertInto: context) as! Profile
@@ -81,8 +78,6 @@ class ConversationsDataSource {
         rubensMessage.text = "Pub?"
         rubensMessage.profile = rubens
         rubensMessage.timestamp = Date(timeInterval: -180, since: Date())
-        
-        messages.append(rubensMessage)
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
@@ -99,23 +94,95 @@ class ConversationsDataSource {
         tiboMessage.profile = tibo
         tiboMessage.timestamp = Date(timeInterval: -240, since: Date())
         
-        messages.append(tiboMessage)
         
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        let tiboMessage2 = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
+        tiboMessage2.id = 66666
+        tiboMessage2.text = "Material Design sucks!!!"
+        tiboMessage2.profile = tibo
+        tiboMessage2.timestamp = Date(timeInterval: -300, since: Date())
         
-        let mat = NSManagedObject(entity: profileEntity, insertInto: context) as! Profile
-        mat.id = 66666
-        mat.name = "Matt"
-        image = UIImage(named: "LoginBackground6")!
-        mat.profileImage = UIImageJPEGRepresentation(image, 0.7)
-        mat.isOnline = false
+        do {
+            try context.save()
+        } catch let error {
+            print(error)
+        }
         
-        let matMessage = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
-        matMessage.id = 66666
-        matMessage.text = "Material Design sucks!!!"
-        matMessage.profile = mat
-        matMessage.timestamp = Date(timeInterval: -300, since: Date())
+        loadDataFromLocalStorage()
+    }
+    
+    func loadDataFromLocalStorage(){
+        guard let appDel = UIApplication.shared.delegate as? AppDelegate else { return }
+        let context = appDel.persistentContainer.viewContext
         
-        messages.append(matMessage)
+        if let profiles = fetchProfiles() {
+            for profile in profiles {
+                let fetchRequest = NSFetchRequest<Message>(entityName: "Message")
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
+                fetchRequest.predicate = NSPredicate(format: "profile.id = %ld", profile.id)
+                fetchRequest.fetchLimit = 1
+                do {
+                    let fetchedMessages = try context.fetch(fetchRequest)
+                    messages?.append(contentsOf: fetchedMessages)
+                } catch let error {
+                    print(error)
+                }
+            }
+        }
+        messages = messages?.sorted(by:{ $0.timestamp! > $1.timestamp!})
+    }
+    
+    func fetchProfiles() -> [Profile]? {
+        guard let appDel = UIApplication.shared.delegate as? AppDelegate else { return nil }
+        let context = appDel.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<Profile>(entityName: "Profile")
+        do {
+            let profiles = try context.fetch(fetchRequest)
+            return profiles
+        } catch let error {
+            print(error)
+        }
+        return nil
+    }
+    
+    func clearDataFromLocalStorage(){
+        guard let appDel = UIApplication.shared.delegate as? AppDelegate else { return }
+        let context = appDel.persistentContainer.viewContext
+        let messagesFetchRequest = NSFetchRequest<Message>(entityName: "Message")
+        let profilesFetchRequest = NSFetchRequest<Profile>(entityName: "Profile")
+        do {
+            let messages = try context.fetch(messagesFetchRequest)
+            for message in messages {
+                context.delete(message)
+            }
+            let profiles = try context.fetch(profilesFetchRequest)
+            for profile in profiles {
+                context.delete(profile)
+            }
+            try context.save()
+        } catch let error {
+            print(error)
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
