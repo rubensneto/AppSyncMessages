@@ -97,7 +97,7 @@ class ConversationsDataSource {
         
         let tiboMessage2 = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
         tiboMessage2.id = 66666
-        tiboMessage2.text = "Material Design sucks!!!"
+        tiboMessage2.text = "I'm totally in pain for more than a month now and this fucking sucks!!! I'm not kidding, I'm gonna kill someone."
         tiboMessage2.profile = tibo
         tiboMessage2.timestamp = Date(timeInterval: -300, since: Date())
         

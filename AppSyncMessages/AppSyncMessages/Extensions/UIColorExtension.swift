@@ -18,11 +18,15 @@ extension UIColor {
     }()
     
     static let reconDarkGray: UIColor = {
-        UIColor(red: 0.16, green: 0.16, blue: 0.16, alpha: 1)
+        return UIColor(red: 0.16, green: 0.16, blue: 0.16, alpha: 1)
     }()
     
     static let reconDarkBackground: UIColor = {
-        UIColor(red: 0.12, green: 0.12, blue: 0.12, alpha: 1)
+        return UIColor(red: 0.12, green: 0.12, blue: 0.12, alpha: 1)
+    }()
+    
+    static let reconDarkGrayText: UIColor = {
+        return UIColor(red: 0.49, green: 0.49, blue: 0.49, alpha: 1)
     }()
     
     

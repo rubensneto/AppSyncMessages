@@ -11,7 +11,7 @@ import UIKit
 class SearchCell: T101Cell {
     let conversationSearchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.barTintColor = UIColor(hue: 0, saturation: 0, brightness: 0, alpha: 0)
+        searchBar.barTintColor = .clear
         searchBar.setBarTextField(color: .reconDarkBackground)
         searchBar.setBarTextField(cornerRadius: 18)
         searchBar.setBarTextField(textColor: .white)

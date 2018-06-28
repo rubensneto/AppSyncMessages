@@ -32,6 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = .white
         UIApplication.shared.statusBarStyle = .lightContent
         
+        //TODO: Implement next line dinamically
+        UserDefaults.standard.set(12345, forKey: "userId")
+        
         return true
     }
 

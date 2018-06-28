@@ -46,7 +46,7 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let controller = MessagesCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        controller.profile = dataSource.messages![indexPath.row].profile!
+        controller.profile = dataSource.messages![indexPath.row - 1].profile!
         navigationController?.pushViewController(controller, animated: true)
     }
 

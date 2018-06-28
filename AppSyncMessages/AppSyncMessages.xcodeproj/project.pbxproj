@@ -25,6 +25,9 @@
 		D0AA6E8F20E272DE0068B02B /* ApiProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8E20E272DE0068B02B /* ApiProfile.swift */; };
 		D0AA6E9120E273200068B02B /* ApiMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E9020E273200068B02B /* ApiMessage.swift */; };
 		D0AA6E9E20E3E05B0068B02B /* MessagesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E9D20E3E05B0068B02B /* MessagesCollectionViewController.swift */; };
+		D0AA6EA020E4F9F00068B02B /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E9F20E4F9F00068B02B /* DateExtension.swift */; };
+		D0AA6EA220E50B6D0068B02B /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6EA120E50B6D0068B02B /* UIFontExtension.swift */; };
+		D0AA6EA420E535440068B02B /* ChatBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6EA320E535440068B02B /* ChatBubbleCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +72,9 @@
 		D0AA6E8E20E272DE0068B02B /* ApiProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiProfile.swift; sourceTree = "<group>"; };
 		D0AA6E9020E273200068B02B /* ApiMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiMessage.swift; sourceTree = "<group>"; };
 		D0AA6E9D20E3E05B0068B02B /* MessagesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesCollectionViewController.swift; sourceTree = "<group>"; };
+		D0AA6E9F20E4F9F00068B02B /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		D0AA6EA120E50B6D0068B02B /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
+		D0AA6EA320E535440068B02B /* ChatBubbleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubbleCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,9 +161,11 @@
 		D0AA6E7820E1429C0068B02B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D0AA6E9F20E4F9F00068B02B /* DateExtension.swift */,
+				D0AA6E7B20E142DE0068B02B /* UIColorExtension.swift */,
+				D0AA6EA120E50B6D0068B02B /* UIFontExtension.swift */,
 				D0AA6E8620E23DF80068B02B /* UISearchBarExtension.swift */,
 				D0AA6E7920E142B30068B02B /* UIViewExtension.swift */,
-				D0AA6E7B20E142DE0068B02B /* UIColorExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -183,6 +191,7 @@
 		D0AA6E7F20E145070068B02B /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				D0AA6EA320E535440068B02B /* ChatBubbleCell.swift */,
 				D0AA6E8020E145470068B02B /* ConversationCell.swift */,
 				D0AA6E8220E233090068B02B /* SearchCell.swift */,
 				D0AA6E8420E236FC0068B02B /* T101Cell.swift */,
@@ -337,10 +346,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0AA6E9E20E3E05B0068B02B /* MessagesCollectionViewController.swift in Sources */,
+				D0AA6EA020E4F9F00068B02B /* DateExtension.swift in Sources */,
+				D0AA6EA220E50B6D0068B02B /* UIFontExtension.swift in Sources */,
 				D0AA6E9120E273200068B02B /* ApiMessage.swift in Sources */,
 				D0AA6E4A20E100780068B02B /* ConversationsController.swift in Sources */,
 				D0AA6E8A20E255FF0068B02B /* ConversationsDataSource.swift in Sources */,
 				D0AA6E8D20E25C380068B02B /* ConversationCellViewModel.swift in Sources */,
+				D0AA6EA420E535440068B02B /* ChatBubbleCell.swift in Sources */,
 				D0AA6E5020E100780068B02B /* AppSyncMessages.xcdatamodeld in Sources */,
 				D0AA6E8120E145470068B02B /* ConversationCell.swift in Sources */,
 				D0AA6E8320E233090068B02B /* SearchCell.swift in Sources */,
