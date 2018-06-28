@@ -26,8 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = UINavigationController(rootViewController: conversationsController)
         
+        //Navigation Bar Style
         UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.clear], for: .normal)
         UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.clear], for: UIControlState.highlighted)
+        UINavigationBar.appearance().tintColor = .white
+        UIApplication.shared.statusBarStyle = .lightContent
         
         return true
     }
