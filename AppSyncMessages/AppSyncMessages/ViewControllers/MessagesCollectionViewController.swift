@@ -12,6 +12,8 @@ private let reuseIdentifier = "Cell"
 
 class MessagesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    var senderId: Int!
+    var messages: [Message]?
     private let chatBubbleCellId = "chatBubbleCellId"
     
     var profile: Profile! {
@@ -26,8 +28,6 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
             messages = messages?.sorted(by:{ $0.timestamp! < $1.timestamp!})
         }
     }
-    
-    var messages: [Message]?
     
     let optionsButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -64,6 +64,7 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        senderId = UserDefaults.standard.value(forKey: "userId") as! Int
         navigationItem.rightBarButtonItem = optionsButton
         navigationController?.navigationBar.addSubview(navigationContainerView)
         navigationController?.navigationBar.bringSubview(toFront: navigationContainerView)
@@ -95,27 +96,27 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: chatBubbleCellId, for: indexPath) as! ChatBubbleCell
         if let message = messages?[indexPath.row] {
             cell.message = message
-            let estimatedSize = NSString(string: message.text!).boundingRect(
-                with: CGSize(width: 250, height: CGFloat.greatestFiniteMagnitude),
-                options: .usesLineFragmentOrigin,
-                attributes: [.font: UIFont.reconMessageText],
-                context: nil).size
-            let textViewHeight = UIFont.reconMessageText.heightOfString(string: message.text!, constrainedToWidth: 250)
-            cell.bubbleView.frame = CGRect(x: 10, y: 0, width: estimatedSize.width + 20, height: cell.frame.height)
-            cell.messageTextView.frame = CGRect(x: 20, y: 8, width: estimatedSize.width, height: textViewHeight)
-            cell.timestampLabel.frame = CGRect(x: 20, y: cell.messageTextView.frame.height + 10, width: 250, height: 12)
+            cell.bubbleWidthAnchor?.constant = estimateFrameFor(string: message.text!).width + 22
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var height: CGFloat = 80
+        var paddingConstraints: CGFloat = 6 + 1 + 12 + 6
         if let message = messages?[indexPath.row] {
-            let textViewHeight = UIFont.reconMessageText.heightOfString(string: message.text!, constrainedToWidth: 250)
-            let timestampHeight: CGFloat = 12
-            let verticalPadding: CGFloat = 16
-            return CGSize(width: view.frame.width, height: textViewHeight + timestampHeight + verticalPadding)
+            height = estimateFrameFor(string: message.text!).height + paddingConstraints
         }
-        return CGSize(width: 0, height: 0)
+        return CGSize(width: view.frame.width, height: height)
+    }
+    
+    func estimateFrameFor(string: String) -> CGRect {
+        let size = CGSize(width: 230, height: 1000)
+        return NSString(string: string).boundingRect(
+            with: size,
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: UIFont.reconMessageText],
+            context: nil)
     }
     
     //MARK: Styling
@@ -138,8 +139,9 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         collectionView?.register(ChatBubbleCell.self, forCellWithReuseIdentifier: chatBubbleCellId)
         collectionView?.alwaysBounceVertical = true
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 8
+        layout.minimumLineSpacing = 20
         collectionView?.collectionViewLayout = layout
+        collectionView?.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     }
 }
 

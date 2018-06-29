@@ -88,18 +88,30 @@ class ConversationsDataSource {
         tibo.profileImage = UIImageJPEGRepresentation(image, 0.7)
         tibo.isOnline = true
         
+//        let userProfile = NSManagedObject(entity: profileEntity, insertInto: context) as! Profile
+//        userProfile.id = 12345
+//        userProfile.name = "Rubens"
+//        image = UIImage(named: "LoginBackground5")!
+//        userProfile.profileImage = UIImageJPEGRepresentation(image, 0.7)
+//        userProfile.isOnline = false
+        
         let tiboMessage = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
         tiboMessage.id = 55555
         tiboMessage.text = "Do you have any pain killers?"
         tiboMessage.profile = tibo
         tiboMessage.timestamp = Date(timeInterval: -240, since: Date())
         
-        
         let tiboMessage2 = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
         tiboMessage2.id = 66666
-        tiboMessage2.text = "I'm totally in pain for more than a month now and this fucking sucks!!! I'm not kidding, I'm gonna kill someone."
+        tiboMessage2.text = "Hey TiBo! Don't worry man, everything is gonna be alright, how can I help you?"
         tiboMessage2.profile = tibo
-        tiboMessage2.timestamp = Date(timeInterval: -300, since: Date())
+        tiboMessage2.timestamp = Date(timeInterval: -270, since: Date())
+        
+        let tiboMessage3 = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
+        tiboMessage3.id = 77777
+        tiboMessage3.text = "I'm totally in pain for more than a month now and this fucking sucks!!! I'm not kidding, I'm gonna kill someone."
+        tiboMessage3.profile = tibo
+        tiboMessage3.timestamp = Date(timeInterval: -300, since: Date())
         
         do {
             try context.save()

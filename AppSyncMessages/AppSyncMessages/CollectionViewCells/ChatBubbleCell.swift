@@ -18,10 +18,17 @@ enum MessageOrigin: Int {
     case outgoing = 1
 }
 
-class ChatBubbleCell: T101Cell {
+enum BubbleType: Int {
+    case first = 0
+    case subsequent = 1
+}
+
+class ChatBubbleCell: UICollectionViewCell {
     
     var messageType: MessageType!
     var messageOrigin: MessageOrigin!
+    
+    var bubbleType: BubbleType!
     
     var message: Message! {
         didSet {
@@ -40,15 +47,20 @@ class ChatBubbleCell: T101Cell {
         view.backgroundColor = .reconDarkBackground
         view.layer.cornerRadius = 15
         view.layer.masksToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    var bubbleWidthAnchor: NSLayoutConstraint?
     
     let messageTextView: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = .clear
         textView.font = UIFont.reconMessageText
         textView.textColor = .white
-        textView.contentInset = UIEdgeInsetsMake(-10, -5, 0, 0)
+        textView.contentInset = UIEdgeInsets(top: -8, left: -1, bottom: 0, right: 0)
+        textView.isUserInteractionEnabled = false
+        textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
     
@@ -56,14 +68,36 @@ class ChatBubbleCell: T101Cell {
         let label = UILabel()
         label.font = UIFont.reconMessageTimestamp
         label.textColor = .reconDarkGrayText
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    override func setupCellView() {
-        super.setupCellView()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.backgroundColor = .clear
         addSubview(bubbleView)
         addSubview(messageTextView)
         addSubview(timestampLabel)
+        
+        bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
+        bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        bubbleWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 250)
+        bubbleWidthAnchor?.isActive = true
+        
+        messageTextView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 6).isActive = true
+        messageTextView.topAnchor.constraint(equalTo: bubbleView.topAnchor, constant: 6).isActive = true
+        messageTextView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
+        messageTextView.bottomAnchor.constraint(equalTo: timestampLabel.topAnchor, constant: 1).isActive = true
+        
+        
+        timestampLabel.heightAnchor.constraint(equalToConstant: 12).isActive = true
+        timestampLabel.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 10).isActive = true
+        timestampLabel.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: -6).isActive = true
     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }
