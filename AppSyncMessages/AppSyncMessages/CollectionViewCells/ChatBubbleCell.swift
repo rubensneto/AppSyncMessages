@@ -8,37 +8,16 @@
 
 import UIKit
 
-enum MessageType: Int {
-    case text = 0
-    case image = 1
-}
-
-enum MessageOrigin: Int {
-    case incoming = 0
-    case outgoing = 1
-}
-
-enum BubbleType: Int {
-    case first = 0
-    case subsequent = 1
-}
-
 class ChatBubbleCell: UICollectionViewCell {
-    
-    var messageType: MessageType!
-    var messageOrigin: MessageOrigin!
-    
-    var bubbleType: BubbleType!
     
     var message: Message! {
         didSet {
-            let userId = UserDefaults.standard.value(forKey: "userId") as! Int
-            userId == Int(message.profile!.id) ? (messageOrigin = .outgoing) : (messageOrigin = .incoming)
-            if let text = message.text {
-                messageType = .text
-                messageTextView.text = text
-            }
+            messageTextView.text = message.text
+            bubbleViewRightAnchor?.isActive = message.isSender
+            bubbleViewLeftAnchor?.isActive = !message.isSender
             timestampLabel.text = message.timestamp!.getHourFromDate()
+            timestampLeftAnchor?.isActive = message.isSender
+            timestampRightAnchor?.isActive = !message.isSender
         }
     }
     
@@ -50,8 +29,6 @@ class ChatBubbleCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    var bubbleWidthAnchor: NSLayoutConstraint?
     
     let messageTextView: UITextView = {
         let textView = UITextView()
@@ -72,6 +49,12 @@ class ChatBubbleCell: UICollectionViewCell {
         return label
     }()
     
+    var bubbleWidthAnchor: NSLayoutConstraint?
+    var bubbleViewLeftAnchor: NSLayoutConstraint?
+    var bubbleViewRightAnchor: NSLayoutConstraint?
+    var timestampLeftAnchor: NSLayoutConstraint?
+    var timestampRightAnchor: NSLayoutConstraint?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .clear
@@ -79,10 +62,11 @@ class ChatBubbleCell: UICollectionViewCell {
         addSubview(messageTextView)
         addSubview(timestampLabel)
         
-        bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
+        bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10)
+        bubbleViewLeftAnchor =  bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10)
         bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-        bubbleWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 250)
+        bubbleWidthAnchor = bubbleView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 100)
         bubbleWidthAnchor?.isActive = true
         
         messageTextView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 6).isActive = true
@@ -92,12 +76,27 @@ class ChatBubbleCell: UICollectionViewCell {
         
         
         timestampLabel.heightAnchor.constraint(equalToConstant: 12).isActive = true
-        timestampLabel.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 10).isActive = true
-        timestampLabel.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: -6).isActive = true
+        timestampLeftAnchor = timestampLabel.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 10)
+        timestampRightAnchor = timestampLabel.rightAnchor.constraint(equalTo: bubbleView.rightAnchor, constant: -10)
+        timestampLabel.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: -4).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

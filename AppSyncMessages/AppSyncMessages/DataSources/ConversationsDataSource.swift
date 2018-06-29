@@ -33,6 +33,7 @@ class ConversationsDataSource {
         luizMessage.text = "We should be doing Unit Tests..."
         luizMessage.profile = luiz
         luizMessage.timestamp = Date()
+        luizMessage.isSender = false
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
@@ -48,6 +49,7 @@ class ConversationsDataSource {
         chrisMessage.text = "I can't, I have kids!!!"
         chrisMessage.profile = chris
         chrisMessage.timestamp = Date(timeInterval: -60, since: Date())
+        chrisMessage.isSender = false
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
@@ -63,7 +65,7 @@ class ConversationsDataSource {
         brettMessage.text = "Living is winning!"
         brettMessage.profile = brett
         brettMessage.timestamp = Date(timeInterval: -120, since: Date())
-        
+        brettMessage.isSender = false
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         let rubens = NSManagedObject(entity: profileEntity, insertInto: context) as! Profile
@@ -100,18 +102,21 @@ class ConversationsDataSource {
         tiboMessage.text = "Do you have any pain killers?"
         tiboMessage.profile = tibo
         tiboMessage.timestamp = Date(timeInterval: -240, since: Date())
+        tiboMessage.isSender = false
         
         let tiboMessage2 = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
         tiboMessage2.id = 66666
         tiboMessage2.text = "Hey TiBo! Don't worry man, everything is gonna be alright, how can I help you?"
         tiboMessage2.profile = tibo
         tiboMessage2.timestamp = Date(timeInterval: -270, since: Date())
+        tiboMessage2.isSender = true
         
         let tiboMessage3 = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
         tiboMessage3.id = 77777
         tiboMessage3.text = "I'm totally in pain for more than a month now and this fucking sucks!!! I'm not kidding, I'm gonna kill someone."
         tiboMessage3.profile = tibo
         tiboMessage3.timestamp = Date(timeInterval: -300, since: Date())
+        tiboMessage3.isSender = false
         
         do {
             try context.save()

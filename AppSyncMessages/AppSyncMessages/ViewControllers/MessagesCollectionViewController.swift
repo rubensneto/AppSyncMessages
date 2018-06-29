@@ -21,9 +21,7 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
             nameLabel.text = profile.name
             nameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
             profileImageView.image =  UIImage(data: profile.profileImage!)
-            
             setNavigationBar()
-            
             messages = profile.messages?.allObjects as? [Message]
             messages = messages?.sorted(by:{ $0.timestamp! < $1.timestamp!})
         }
@@ -42,7 +40,8 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     }()
     
     let navigationContainerView: UIView = {
-        let frame: CGRect = CGRect(x: 60, y: 0, width: UIScreen.main.bounds.width - 120, height: 44)
+        let width = UIScreen.main.bounds.width - 120
+        let frame = CGRect(x: 60, y: 0, width: width, height: 44)
         let view = UIView(frame: frame)
         return view
     }()
@@ -81,7 +80,6 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         
     }
     
-
     // MARK: UICollectionViewDataSource
 
 
@@ -103,15 +101,15 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
-        var paddingConstraints: CGFloat = 6 + 1 + 12 + 6
         if let message = messages?[indexPath.row] {
-            height = estimateFrameFor(string: message.text!).height + paddingConstraints
+            height = estimateFrameFor(string: message.text!).height
         }
-        return CGSize(width: view.frame.width, height: height)
+        let paddingConstraints: CGFloat = 6 + 1 + 12 + 4
+        return CGSize(width: view.frame.width, height: height + paddingConstraints)
     }
     
     func estimateFrameFor(string: String) -> CGRect {
-        let size = CGSize(width: 230, height: 1000)
+        let size = CGSize(width: view.bounds.width - 120, height: 1000)
         return NSString(string: string).boundingRect(
             with: size,
             options: .usesLineFragmentOrigin,
