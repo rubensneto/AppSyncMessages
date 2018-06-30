@@ -18,7 +18,6 @@
 		D0AA6E7C20E142DE0068B02B /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E7B20E142DE0068B02B /* UIColorExtension.swift */; };
 		D0AA6E8120E145470068B02B /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8020E145470068B02B /* ConversationCell.swift */; };
 		D0AA6E8320E233090068B02B /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8220E233090068B02B /* SearchCell.swift */; };
-		D0AA6E8520E236FC0068B02B /* T101Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8420E236FC0068B02B /* T101Cell.swift */; };
 		D0AA6E8720E23DF80068B02B /* UISearchBarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8620E23DF80068B02B /* UISearchBarExtension.swift */; };
 		D0AA6E8A20E255FF0068B02B /* ConversationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8920E255FF0068B02B /* ConversationsDataSource.swift */; };
 		D0AA6E8D20E25C380068B02B /* ConversationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8C20E25C380068B02B /* ConversationCellViewModel.swift */; };
@@ -65,7 +64,6 @@
 		D0AA6E7B20E142DE0068B02B /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		D0AA6E8020E145470068B02B /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		D0AA6E8220E233090068B02B /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
-		D0AA6E8420E236FC0068B02B /* T101Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = T101Cell.swift; sourceTree = "<group>"; };
 		D0AA6E8620E23DF80068B02B /* UISearchBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBarExtension.swift; sourceTree = "<group>"; };
 		D0AA6E8920E255FF0068B02B /* ConversationsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsDataSource.swift; sourceTree = "<group>"; };
 		D0AA6E8C20E25C380068B02B /* ConversationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCellViewModel.swift; sourceTree = "<group>"; };
@@ -194,7 +192,6 @@
 				D0AA6EA320E535440068B02B /* ChatBubbleCell.swift */,
 				D0AA6E8020E145470068B02B /* ConversationCell.swift */,
 				D0AA6E8220E233090068B02B /* SearchCell.swift */,
-				D0AA6E8420E236FC0068B02B /* T101Cell.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -361,7 +358,6 @@
 				D0AA6E7A20E142B30068B02B /* UIViewExtension.swift in Sources */,
 				D0AA6E4820E100780068B02B /* AppDelegate.swift in Sources */,
 				D0AA6E8F20E272DE0068B02B /* ApiProfile.swift in Sources */,
-				D0AA6E8520E236FC0068B02B /* T101Cell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
