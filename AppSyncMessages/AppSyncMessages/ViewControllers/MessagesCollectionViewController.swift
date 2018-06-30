@@ -164,8 +164,10 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         navigationController?.navigationBar.addConstraintsWith(format: "H:|[v0(44)]-2-|", views: navigationContainerView)
         navigationContainerView.addConstraintsWith(format: "H:|[v0]-(>=2)-[v1(36)]-0-|", views: nameLabel, profileImageView)
         navigationContainerView.addConstraintsWith(format: "V:[v0(36)]", views: profileImageView)
-        navigationContainerView.addConstraint(NSLayoutConstraint(item: profileImageView, attribute: .centerY, relatedBy: .equal, toItem: navigationContainerView, attribute: .centerY, multiplier: 1, constant: 0))
-        navigationContainerView.addConstraint(NSLayoutConstraint(item: nameLabel, attribute: .centerY, relatedBy: .equal, toItem: navigationContainerView, attribute: .centerY, multiplier: 1, constant: 0))
+        
+        profileImageView.centerYAnchor.constraint(equalTo: navigationContainerView.centerYAnchor).isActive = true
+        nameLabel.centerYAnchor.constraint(equalTo: navigationContainerView.centerYAnchor).isActive = true
+        
     }
     
     func setupCollectionViewLayout(){
