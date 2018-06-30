@@ -59,6 +59,41 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         return imageView
     }()
     
+    func setupInputComponents(){
+        let containerView = UIView()
+        containerView.backgroundColor = .reconDarkBackground
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let sendButton = UIButton()
+        sendButton.backgroundColor = .red
+        sendButton.layer.cornerRadius = 19
+        sendButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        let textField = UITextField()
+        textField.placeholder = "Type a message"
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(containerView)
+        containerView.addSubview(sendButton)
+        containerView.addSubview(textField)
+        
+        // Constraints
+        
+        containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        containerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        containerView.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        
+        sendButton.heightAnchor.constraint(equalToConstant: 38).isActive = true
+        sendButton.widthAnchor.constraint(equalToConstant: 38).isActive = true
+        sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20).isActive = true
+        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        
+        textField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20).isActive = true
+        textField.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: 20).isActive = true
+        textField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+    }
+    
     //MARK: View Life Cicle
     
     override func viewDidLoad() {
@@ -68,6 +103,7 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         navigationController?.navigationBar.addSubview(navigationContainerView)
         navigationController?.navigationBar.bringSubview(toFront: navigationContainerView)
         setupCollectionViewLayout()
+        setupInputComponents()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

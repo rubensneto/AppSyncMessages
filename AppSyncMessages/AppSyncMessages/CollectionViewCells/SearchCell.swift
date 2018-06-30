@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchCell: T101Cell {
+class SearchCell: UICollectionViewCell {
     let conversationSearchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.barTintColor = .clear
@@ -18,7 +18,16 @@ class SearchCell: T101Cell {
         return searchBar
     }()
     
-    override func setupCellView() {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupCellView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupCellView() {
         addSubview(conversationSearchBar)
         addConstraintsWith(format: "H:|-2-[v0]-2-|", views: conversationSearchBar)
         addConstraintsWith(format: "V:|-10-[v0(36)]-10-|", views: conversationSearchBar)
