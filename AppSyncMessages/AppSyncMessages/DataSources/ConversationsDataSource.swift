@@ -161,6 +161,21 @@ class ConversationsDataSource {
         return nil
     }
     
+    
+    func createMessage(text: String, profile: Profile, isSender: Bool){
+        guard let appDel = UIApplication.shared.delegate as? AppDelegate else { return }
+        let context = appDel.persistentContainer.viewContext
+        let messageEntity = NSEntityDescription.entity(forEntityName: "Message", in: context)!
+        
+        let message = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
+        message.text = text
+        message.profile = profile
+        message.timestamp = Date()
+        message.isSender = isSender
+        
+        
+    }
+    
     func clearDataFromLocalStorage(){
         guard let appDel = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDel.persistentContainer.viewContext

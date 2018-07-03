@@ -59,41 +59,32 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         return imageView
     }()
     
-    func setupInputComponents(){
+    let inputContainerView: UIView = {
         let containerView = UIView()
         containerView.backgroundColor = .reconDarkBackground
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let sendButton = UIButton()
-        sendButton.backgroundColor = .red
-        sendButton.layer.cornerRadius = 19
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        let textField = UITextField()
-        textField.placeholder = "Type a message"
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(containerView)
-        containerView.addSubview(sendButton)
-        containerView.addSubview(textField)
-        
-        // Constraints
-        
-        containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        containerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        containerView.heightAnchor.constraint(equalToConstant: 56).isActive = true
-        
-        sendButton.heightAnchor.constraint(equalToConstant: 38).isActive = true
-        sendButton.widthAnchor.constraint(equalToConstant: 38).isActive = true
-        sendButton.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -20).isActive = true
-        sendButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-        
-        textField.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 20).isActive = true
-        textField.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: 20).isActive = true
-        textField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
-    }
+        return containerView
+    }()
     
+    let inputTextField: UITextField = {
+        let textField = UITextField()
+        textField.textColor = .white
+        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.gray]
+        textField.attributedPlaceholder = NSAttributedString(string: "Type a message", attributes: attributes)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
+    let sendButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "sendButtonIcon"), for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
+        button.backgroundColor = .red
+        button.layer.cornerRadius = 19
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+        
     //MARK: View Life Cicle
     
     override func viewDidLoad() {
@@ -167,7 +158,6 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         
         profileImageView.centerYAnchor.constraint(equalTo: navigationContainerView.centerYAnchor).isActive = true
         nameLabel.centerYAnchor.constraint(equalTo: navigationContainerView.centerYAnchor).isActive = true
-        
     }
     
     func setupCollectionViewLayout(){
@@ -178,6 +168,26 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         layout.minimumLineSpacing = 20
         collectionView?.collectionViewLayout = layout
         collectionView?.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+    }
+    
+    func setupInputComponents(){
+        view.addSubview(inputContainerView)
+        inputContainerView.addSubview(sendButton)
+        inputContainerView.addSubview(inputTextField)
+        
+        inputContainerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        inputContainerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        inputContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        inputContainerView.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        
+        sendButton.heightAnchor.constraint(equalToConstant: 38).isActive = true
+        sendButton.widthAnchor.constraint(equalToConstant: 38).isActive = true
+        sendButton.rightAnchor.constraint(equalTo: inputContainerView.rightAnchor, constant: -20).isActive = true
+        sendButton.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
+        
+        inputTextField.leftAnchor.constraint(equalTo: inputContainerView.leftAnchor, constant: 20).isActive = true
+        inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -20).isActive = true
+        inputTextField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
     }
 }
 
