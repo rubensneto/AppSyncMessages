@@ -81,10 +81,15 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
         button.backgroundColor = .red
         button.layer.cornerRadius = 19
+        button.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-        
+    
+    @objc func sendMessage(){
+        print(inputTextField.text!)
+    }
+    
     //MARK: View Life Cicle
     
     override func viewDidLoad() {

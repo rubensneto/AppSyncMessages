@@ -18,7 +18,6 @@ class ConversationsDataSource {
         
         guard let appDel = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDel.persistentContainer.viewContext
-        let messageEntity = NSEntityDescription.entity(forEntityName: "Message", in: context)!
         let profileEntity = NSEntityDescription.entity(forEntityName: "Profile", in: context)!
         
         let luiz = NSManagedObject(entity: profileEntity, insertInto: context) as! Profile
@@ -28,14 +27,7 @@ class ConversationsDataSource {
         luiz.profileImage = UIImageJPEGRepresentation(image, 0.7)!
         luiz.isOnline = true
         
-        let luizMessage = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
-        luizMessage.id = 11111
-        luizMessage.text = "We should be doing Unit Tests..."
-        luizMessage.profile = luiz
-        luizMessage.timestamp = Date()
-        luizMessage.isSender = false
-        
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ConversationsDataSource.createMessage(text: "We should be doing Unit Tests...", profile: luiz, date: Date(), context: context, isSender: false)
         
         let chris = NSManagedObject(entity: profileEntity, insertInto: context) as! Profile
         chris.id = 22222
@@ -44,12 +36,7 @@ class ConversationsDataSource {
         chris.profileImage = UIImageJPEGRepresentation(image, 0.7)
         chris.isOnline = false
         
-        let chrisMessage = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
-        chrisMessage.id = 22222
-        chrisMessage.text = "I can't, I have kids!!!"
-        chrisMessage.profile = chris
-        chrisMessage.timestamp = Date(timeInterval: -60, since: Date())
-        chrisMessage.isSender = false
+        ConversationsDataSource.createMessage(text: "I can't, I have kids!!!", profile: chris, date: Date(timeInterval: -60, since: Date()), context: context, isSender: false)
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
@@ -60,12 +47,8 @@ class ConversationsDataSource {
         brett.profileImage = UIImageJPEGRepresentation(image, 0.7)
         brett.isOnline = false
         
-        let brettMessage = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
-        brettMessage.id = 33333
-        brettMessage.text = "Living is winning!"
-        brettMessage.profile = brett
-        brettMessage.timestamp = Date(timeInterval: -120, since: Date())
-        brettMessage.isSender = false
+        ConversationsDataSource.createMessage(text: "Living is winning!", profile: brett, date: Date(timeInterval: -120, since: Date()), context: context, isSender: false)
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         let rubens = NSManagedObject(entity: profileEntity, insertInto: context) as! Profile
@@ -75,11 +58,7 @@ class ConversationsDataSource {
         rubens.profileImage = UIImageJPEGRepresentation(image, 0.7)
         rubens.isOnline = false
         
-        let rubensMessage = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
-        rubensMessage.id = 44444
-        rubensMessage.text = "Pub?"
-        rubensMessage.profile = rubens
-        rubensMessage.timestamp = Date(timeInterval: -180, since: Date())
+        ConversationsDataSource.createMessage(text: "Pub?", profile: rubens, date: Date(timeInterval: -180, since: Date()), context: context, isSender: false)
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
@@ -90,33 +69,9 @@ class ConversationsDataSource {
         tibo.profileImage = UIImageJPEGRepresentation(image, 0.7)
         tibo.isOnline = true
         
-//        let userProfile = NSManagedObject(entity: profileEntity, insertInto: context) as! Profile
-//        userProfile.id = 12345
-//        userProfile.name = "Rubens"
-//        image = UIImage(named: "LoginBackground5")!
-//        userProfile.profileImage = UIImageJPEGRepresentation(image, 0.7)
-//        userProfile.isOnline = false
-        
-        let tiboMessage = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
-        tiboMessage.id = 55555
-        tiboMessage.text = "Do you have any pain killers?"
-        tiboMessage.profile = tibo
-        tiboMessage.timestamp = Date(timeInterval: -240, since: Date())
-        tiboMessage.isSender = false
-        
-        let tiboMessage2 = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
-        tiboMessage2.id = 66666
-        tiboMessage2.text = "Hey TiBo! Don't worry man, everything is gonna be alright, how can I help you?"
-        tiboMessage2.profile = tibo
-        tiboMessage2.timestamp = Date(timeInterval: -270, since: Date())
-        tiboMessage2.isSender = true
-        
-        let tiboMessage3 = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
-        tiboMessage3.id = 77777
-        tiboMessage3.text = "I'm totally in pain for more than a month now and this fucking sucks!!! I'm not kidding, I'm gonna kill someone."
-        tiboMessage3.profile = tibo
-        tiboMessage3.timestamp = Date(timeInterval: -300, since: Date())
-        tiboMessage3.isSender = false
+        ConversationsDataSource.createMessage(text: "Do you have any pain killers?", profile: tibo, date: Date(timeInterval: -240, since: Date()), context: context, isSender: false)
+        ConversationsDataSource.createMessage(text: "Hey TiBo! Don't worry man, everything is gonna be alright, how can I help you?", profile: tibo, date: Date(timeInterval: -270, since: Date()), context: context, isSender: true)
+        ConversationsDataSource.createMessage(text: "I'm totally in pain for more than a month now and this fucking sucks!!! I'm not kidding, I'm gonna kill someone.", profile: tibo, date: Date(timeInterval: -300, since: Date()), context: context, isSender: false)
         
         do {
             try context.save()
@@ -125,6 +80,19 @@ class ConversationsDataSource {
         }
         
         loadDataFromLocalStorage()
+    }
+    
+    static func createMessage(text: String, profile: Profile, date: Date, context: NSManagedObjectContext, isSender: Bool) {
+        let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
+        message.text = text
+        message.timestamp = date
+        message.isSender = isSender
+        message.profile = profile
+        
+        let userId = UserDefaults.standard.value(forKey: "userId") as! Int
+        isSender ?
+            (message.id = String(describing: userId) + String(describing: profile.id) + String(describing: message.timestamp)) :
+            (message.id = String(describing: profile.id) + String(describing: userId) + String(describing: message.timestamp))
     }
     
     func loadDataFromLocalStorage(){
@@ -159,21 +127,6 @@ class ConversationsDataSource {
             print(error)
         }
         return nil
-    }
-    
-    
-    func createMessage(text: String, profile: Profile, isSender: Bool){
-        guard let appDel = UIApplication.shared.delegate as? AppDelegate else { return }
-        let context = appDel.persistentContainer.viewContext
-        let messageEntity = NSEntityDescription.entity(forEntityName: "Message", in: context)!
-        
-        let message = NSManagedObject(entity: messageEntity, insertInto: context) as! Message
-        message.text = text
-        message.profile = profile
-        message.timestamp = Date()
-        message.isSender = isSender
-        
-        
     }
     
     func clearDataFromLocalStorage(){
