@@ -19,7 +19,7 @@
 		D0AA6E8120E145470068B02B /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8020E145470068B02B /* ConversationCell.swift */; };
 		D0AA6E8320E233090068B02B /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8220E233090068B02B /* SearchCell.swift */; };
 		D0AA6E8720E23DF80068B02B /* UISearchBarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8620E23DF80068B02B /* UISearchBarExtension.swift */; };
-		D0AA6E8A20E255FF0068B02B /* ConversationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8920E255FF0068B02B /* ConversationsDataSource.swift */; };
+		D0AA6E8A20E255FF0068B02B /* MessagesDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8920E255FF0068B02B /* MessagesDataManager.swift */; };
 		D0AA6E8D20E25C380068B02B /* ConversationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8C20E25C380068B02B /* ConversationCellViewModel.swift */; };
 		D0AA6E8F20E272DE0068B02B /* ApiProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E8E20E272DE0068B02B /* ApiProfile.swift */; };
 		D0AA6E9120E273200068B02B /* ApiMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6E9020E273200068B02B /* ApiMessage.swift */; };
@@ -65,7 +65,7 @@
 		D0AA6E8020E145470068B02B /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		D0AA6E8220E233090068B02B /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		D0AA6E8620E23DF80068B02B /* UISearchBarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBarExtension.swift; sourceTree = "<group>"; };
-		D0AA6E8920E255FF0068B02B /* ConversationsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsDataSource.swift; sourceTree = "<group>"; };
+		D0AA6E8920E255FF0068B02B /* MessagesDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesDataManager.swift; sourceTree = "<group>"; };
 		D0AA6E8C20E25C380068B02B /* ConversationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCellViewModel.swift; sourceTree = "<group>"; };
 		D0AA6E8E20E272DE0068B02B /* ApiProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiProfile.swift; sourceTree = "<group>"; };
 		D0AA6E9020E273200068B02B /* ApiMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiMessage.swift; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 			children = (
 				D0AA6E4720E100780068B02B /* AppDelegate.swift */,
 				D0AA6E7F20E145070068B02B /* CollectionViewCells */,
-				D0AA6E8820E255D30068B02B /* DataSources */,
+				D0AA6E8820E255D30068B02B /* Managers */,
 				D0AA6E7820E1429C0068B02B /* Extensions */,
 				D0AA6E7D20E144C60068B02B /* Models */,
 				D0AA6E7E20E144DB0068B02B /* ViewControllers */,
@@ -196,12 +196,12 @@
 			path = CollectionViewCells;
 			sourceTree = "<group>";
 		};
-		D0AA6E8820E255D30068B02B /* DataSources */ = {
+		D0AA6E8820E255D30068B02B /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				D0AA6E8920E255FF0068B02B /* ConversationsDataSource.swift */,
+				D0AA6E8920E255FF0068B02B /* MessagesDataManager.swift */,
 			);
-			path = DataSources;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		D0AA6E8B20E25C110068B02B /* ViewModels */ = {
@@ -347,7 +347,7 @@
 				D0AA6EA220E50B6D0068B02B /* UIFontExtension.swift in Sources */,
 				D0AA6E9120E273200068B02B /* ApiMessage.swift in Sources */,
 				D0AA6E4A20E100780068B02B /* ConversationsController.swift in Sources */,
-				D0AA6E8A20E255FF0068B02B /* ConversationsDataSource.swift in Sources */,
+				D0AA6E8A20E255FF0068B02B /* MessagesDataManager.swift in Sources */,
 				D0AA6E8D20E25C380068B02B /* ConversationCellViewModel.swift in Sources */,
 				D0AA6EA420E535440068B02B /* ChatBubbleCell.swift in Sources */,
 				D0AA6E5020E100780068B02B /* AppSyncMessages.xcdatamodeld in Sources */,

@@ -13,8 +13,6 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
     private let conversationCellId = "conversationCellId"
     private let searchCellId = "searchCellId"
     
-    let dataSource = ConversationsDataSource()
-
     //MARK: View Life Cicle
     
     override func viewDidLoad() {
@@ -26,7 +24,7 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
     //MARK: Collection View
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let count = dataSource.messages?.count {
+        if let count = MessagesDataManager.shared.messages?.count {
             return count + 1
         }
         return 0
@@ -37,7 +35,7 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
            return collectionView.dequeueReusableCell(withReuseIdentifier: searchCellId, for: indexPath)
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: conversationCellId, for: indexPath) as! ConversationCell
-        if let message = dataSource.messages?[indexPath.row - 1] {
+        if let message = MessagesDataManager.shared.messages?[indexPath.row - 1] {
             cell.message = message
         }
         
@@ -46,7 +44,7 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let controller = MessagesCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        controller.profile = dataSource.messages![indexPath.row - 1].profile!
+        controller.profile = MessagesDataManager.shared.messages![indexPath.row - 1].profile!
         navigationController?.pushViewController(controller, animated: true)
     }
 

@@ -16,6 +16,7 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     var messages: [Message]?
     private let chatBubbleCellId = "chatBubbleCellId"
     
+    
     var profile: Profile! {
         didSet{
             nameLabel.text = profile.name
@@ -86,9 +87,6 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         return button
     }()
     
-    @objc func sendMessage(){
-        print(inputTextField.text!)
-    }
     
     //MARK: View Life Cicle
     
@@ -102,6 +100,11 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         setupInputComponents()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        scrollToBottom()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         navigationContainerView.removeFromSuperview()
     }
@@ -110,6 +113,19 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     
     @objc func optionsButtonAction(){
         
+    }
+    
+    @objc func sendMessage(){
+        if let text = inputTextField.text {
+            if let message = MessagesDataManager.shared.createMessage(text: text, profile: profile, date: Date(), isSender: true) {
+                messages?.append(message)
+                let item = messages!.count - 1
+                let newIndexPath = IndexPath(item: item, section: 0)
+                collectionView?.insertItems(at: [newIndexPath])
+                scrollToBottom()
+                inputTextField.text = ""
+            }
+        }
     }
     
     // MARK: UICollectionViewDataSource
@@ -149,6 +165,13 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
             context: nil)
     }
     
+    func scrollToBottom(){
+        if messages!.count > 0 {
+            let indexPath = IndexPath(item: messages!.count - 1, section: 0)
+            collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        }
+    }
+    
     //MARK: Styling
     
     func setNavigationBar(){
@@ -172,7 +195,7 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 20
         collectionView?.collectionViewLayout = layout
-        collectionView?.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        collectionView?.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 76, right: 0)
     }
     
     func setupInputComponents(){
