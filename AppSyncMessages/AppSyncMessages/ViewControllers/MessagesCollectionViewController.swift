@@ -87,6 +87,7 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         return button
     }()
     
+    var inputViewBottomConstraint: NSLayoutConstraint!
     
     //MARK: View Life Cicle
     
@@ -98,6 +99,9 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         navigationController?.navigationBar.bringSubview(toFront: navigationContainerView)
         setupCollectionViewLayout()
         setupInputComponents()
+        hideKeyboardOnTap()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillHide, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -205,8 +209,9 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         
         inputContainerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         inputContainerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        inputContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         inputContainerView.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        inputViewBottomConstraint = inputContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        inputViewBottomConstraint.isActive = true
         
         sendButton.heightAnchor.constraint(equalToConstant: 38).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 38).isActive = true
@@ -216,6 +221,27 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         inputTextField.leftAnchor.constraint(equalTo: inputContainerView.leftAnchor, constant: 20).isActive = true
         inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -20).isActive = true
         inputTextField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
+    }
+    
+    //MARK: TextField & Keyboard
+    
+    @objc func keyboardWillChange(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            let isKeyboardShowing = notification.name == .UIKeyboardWillShow
+            
+            self.inputViewBottomConstraint.constant = isKeyboardShowing ? -keyboardHeight : 0
+            
+            UIView.animate(withDuration: 0, animations: {
+                self.view.layoutIfNeeded()
+            }) { (completed) in
+                if let count = self.messages?.count, count > 0 {
+                    let indexPath = IndexPath(item: self.messages!.count - 1, section: 0)
+                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                }
+            }
+        }
     }
 }
 
