@@ -10,7 +10,7 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class MessagesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class MessagesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
     
     var senderId: Int!
     var messages: [Message]?
@@ -67,17 +67,20 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         return containerView
     }()
     
-    let inputTextField: UITextField = {
-        let textField = UITextField()
-        textField.textColor = .white
-        let attributes = [NSAttributedStringKey.foregroundColor: UIColor.gray]
-        textField.attributedPlaceholder = NSAttributedString(string: "Type a message", attributes: attributes)
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
+    let inputTextView: UITextView = {
+        let textView = UITextView()
+        textView.backgroundColor = .clear
+        textView.textColor = .gray
+        textView.text = "Type a message"
+        textView.font = UIFont.systemFont(ofSize: 14)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
     }()
     
     let sendButton: UIButton = {
         let button = UIButton()
+        button.alpha = 0.25
+        button.isEnabled = false
         button.setImage(UIImage(named: "sendButtonIcon"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 0)
         button.backgroundColor = .red
@@ -87,7 +90,9 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         return button
     }()
     
-    var inputViewBottomConstraint: NSLayoutConstraint!
+    private var inputTextViewNumberOfLines = 2
+    private var inputViewBottomConstraint: NSLayoutConstraint!
+    private var inputContainerViewHeightConstraint: NSLayoutConstraint!
     
     //MARK: View Life Cicle
     
@@ -99,7 +104,6 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         navigationController?.navigationBar.bringSubview(toFront: navigationContainerView)
         setupCollectionViewLayout()
         setupInputComponents()
-        hideKeyboardOnTap()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillHide, object: nil)
     }
@@ -120,16 +124,19 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     }
     
     @objc func sendMessage(){
-        if let text = inputTextField.text {
+        if let text = inputTextView.text, !text.isEmpty {
             if let message = MessagesDataManager.shared.createMessage(text: text, profile: profile, date: Date(), isSender: true) {
                 messages?.append(message)
                 let item = messages!.count - 1
                 let newIndexPath = IndexPath(item: item, section: 0)
                 collectionView?.insertItems(at: [newIndexPath])
                 scrollToBottom()
-                inputTextField.text = ""
+                inputTextView.text = ""
+                inputContainerViewHeightConstraint.constant = 56
+                inputTextViewNumberOfLines = 2
             }
         }
+        toggleSendButton()
     }
     
     // MARK: UICollectionViewDataSource
@@ -147,6 +154,9 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         if let message = messages?[indexPath.row] {
             cell.message = message
             cell.bubbleWidthAnchor?.constant = estimateFrameFor(string: message.text!).width + 22
+            if cell.bubbleWidthAnchor!.constant < 42 {
+                cell.bubbleWidthAnchor!.constant = 42
+            }
         }
         return cell
     }
@@ -176,6 +186,10 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         }
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        inputTextView.endEditing(true)
+    }
+    
     //MARK: Styling
     
     func setNavigationBar(){
@@ -202,14 +216,18 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         collectionView?.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 76, right: 0)
     }
     
+    
+    
     func setupInputComponents(){
         view.addSubview(inputContainerView)
         inputContainerView.addSubview(sendButton)
-        inputContainerView.addSubview(inputTextField)
+        inputContainerView.addSubview(inputTextView)
+        inputTextView.delegate = self
         
         inputContainerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         inputContainerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        inputContainerView.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        inputContainerViewHeightConstraint = inputContainerView.heightAnchor.constraint(equalToConstant: 56)
+        inputContainerViewHeightConstraint.isActive = true
         inputViewBottomConstraint = inputContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         inputViewBottomConstraint.isActive = true
         
@@ -218,12 +236,17 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         sendButton.rightAnchor.constraint(equalTo: inputContainerView.rightAnchor, constant: -20).isActive = true
         sendButton.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
         
-        inputTextField.leftAnchor.constraint(equalTo: inputContainerView.leftAnchor, constant: 20).isActive = true
-        inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -20).isActive = true
-        inputTextField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor).isActive = true
+        inputTextView.leftAnchor.constraint(equalTo: inputContainerView.leftAnchor, constant: 20).isActive = true
+        inputTextView.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -20).isActive = true
+        inputTextView.topAnchor.constraint(equalTo: inputContainerView.topAnchor, constant: 10).isActive = true
+        inputTextView.bottomAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: -10).isActive = true
+        
+        
     }
     
-    //MARK: TextField & Keyboard
+    //MARK: TextView & Keyboard Delegate
+    
+    
     
     @objc func keyboardWillChange(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
@@ -241,6 +264,38 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
                     self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
                 }
             }
+        }
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        inputTextView.text = ""
+        inputTextView.textColor = .white
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        inputTextView.text = "Type a message"
+        inputTextView.textColor = .gray
+        inputContainerViewHeightConstraint.constant = 56
+        inputTextViewNumberOfLines = 2
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView == inputTextView {
+            if textView.numberOfLines() > inputTextViewNumberOfLines && textView.numberOfLines() < 4 {
+                inputContainerViewHeightConstraint.constant += textView.font!.lineHeight
+                inputTextViewNumberOfLines = textView.numberOfLines()
+            }
+        }
+        toggleSendButton()
+    }
+    
+    func toggleSendButton(){
+        if let text = inputTextView.text, !text.isEmpty {
+            sendButton.isEnabled = true
+            sendButton.alpha = 1
+        } else {
+            sendButton.isEnabled = false
+            sendButton.alpha = 0.25
         }
     }
 }

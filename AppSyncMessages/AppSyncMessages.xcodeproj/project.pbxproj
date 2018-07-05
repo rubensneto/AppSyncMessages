@@ -27,7 +27,7 @@
 		D0AA6EA420E535440068B02B /* ChatBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA6EA320E535440068B02B /* ChatBubbleCell.swift */; };
 		D0F6D0C820ED1E69004E7E2F /* ProfileDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F6D0C720ED1E69004E7E2F /* ProfileDataManager.swift */; };
 		D0F6D0CA20ED1FED004E7E2F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F6D0C920ED1FED004E7E2F /* CoreDataManager.swift */; };
-		D0F6D0CC20EE0EDF004E7E2F /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F6D0CB20EE0EDF004E7E2F /* UIViewControllerExtension.swift */; };
+		D0F6D0CE20EE4ED3004E7E2F /* UITextViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F6D0CD20EE4ED3004E7E2F /* UITextViewExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,7 +74,7 @@
 		D0AA6EA320E535440068B02B /* ChatBubbleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubbleCell.swift; sourceTree = "<group>"; };
 		D0F6D0C720ED1E69004E7E2F /* ProfileDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataManager.swift; sourceTree = "<group>"; };
 		D0F6D0C920ED1FED004E7E2F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		D0F6D0CB20EE0EDF004E7E2F /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		D0F6D0CD20EE4ED3004E7E2F /* UITextViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,7 +165,7 @@
 				D0AA6EA120E50B6D0068B02B /* UIFontExtension.swift */,
 				D0AA6E8620E23DF80068B02B /* UISearchBarExtension.swift */,
 				D0AA6E7920E142B30068B02B /* UIViewExtension.swift */,
-				D0F6D0CB20EE0EDF004E7E2F /* UIViewControllerExtension.swift */,
+				D0F6D0CD20EE4ED3004E7E2F /* UITextViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -340,8 +340,8 @@
 				D0AA6E9E20E3E05B0068B02B /* MessagesCollectionViewController.swift in Sources */,
 				D0AA6EA020E4F9F00068B02B /* DateExtension.swift in Sources */,
 				D0AA6EA220E50B6D0068B02B /* UIFontExtension.swift in Sources */,
+				D0F6D0CE20EE4ED3004E7E2F /* UITextViewExtension.swift in Sources */,
 				D0F6D0C820ED1E69004E7E2F /* ProfileDataManager.swift in Sources */,
-				D0F6D0CC20EE0EDF004E7E2F /* UIViewControllerExtension.swift in Sources */,
 				D0AA6E4A20E100780068B02B /* ConversationsController.swift in Sources */,
 				D0F6D0CA20ED1FED004E7E2F /* CoreDataManager.swift in Sources */,
 				D0AA6E8A20E255FF0068B02B /* MessagesDataManager.swift in Sources */,
