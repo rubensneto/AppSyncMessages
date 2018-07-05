@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 private let reuseIdentifier = "Cell"
 
@@ -93,6 +94,14 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     private var inputTextViewNumberOfLines = 2
     private var inputViewBottomConstraint: NSLayoutConstraint!
     private var inputContainerViewHeightConstraint: NSLayoutConstraint!
+    
+    let fetchedResultsController: NSFetchedResultsController<Message> = {
+        let fetchRequest = NSFetchRequest<Message>(entityName: "Message")
+        let appDel = UIApplication.shared.delegate as! AppDelegate
+        let context = appDel.persistentContainer.viewContext
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        return frc
+    }()
     
     //MARK: View Life Cicle
     
