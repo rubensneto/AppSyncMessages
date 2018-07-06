@@ -7,18 +7,36 @@
 //
 
 import UIKit
+import CoreData
 
-class ConversationsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ConversationsController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
     
     private let conversationCellId = "conversationCellId"
     private let searchCellId = "searchCellId"
+    
+    lazy var fetchedResultsController: NSFetchedResultsController<Profile> = {
+        let fetchRequest = NSFetchRequest<Profile>(entityName: "Profile")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "lastMessage.timestamp", ascending: false)]
+        fetchRequest.predicate = NSPredicate(format: "lastMessage != nil")
+        let appDel = UIApplication.shared.delegate as! AppDelegate
+        let context = appDel.persistentContainer.viewContext
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        return frc
+    }()
     
     //MARK: View Life Cicle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let error {
+            print(error)
+        }
         setupNavigationLayout()
         setupCollectionViewLayout()
+        
     }
     
     //MARK: Collection View
@@ -35,9 +53,8 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
            return collectionView.dequeueReusableCell(withReuseIdentifier: searchCellId, for: indexPath)
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: conversationCellId, for: indexPath) as! ConversationCell
-        if let message = MessagesDataManager.shared.messages?[indexPath.row - 1] {
-            cell.message = message
-        }
+        let profile = fetchedResultsController.object(at: IndexPath(row: indexPath.row - 1, section: 0))
+        cell.message = profile.lastMessage
         
         return cell
     }

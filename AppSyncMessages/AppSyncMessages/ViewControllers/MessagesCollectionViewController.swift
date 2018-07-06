@@ -11,10 +11,9 @@ import CoreData
 
 private let reuseIdentifier = "Cell"
 
-class MessagesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
+class MessagesCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextViewDelegate, NSFetchedResultsControllerDelegate {
     
     var senderId: Int!
-    var messages: [Message]?
     private let chatBubbleCellId = "chatBubbleCellId"
     
     
@@ -24,8 +23,11 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
             nameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
             profileImageView.image =  UIImage(data: profile.profileImage!)
             setNavigationBar()
-            messages = profile.messages?.allObjects as? [Message]
-            messages = messages?.sorted(by:{ $0.timestamp! < $1.timestamp!})
+            do {
+                try fetchedResultsController.performFetch()
+            } catch let error {
+                print(error)
+            }
         }
     }
     
@@ -95,11 +97,14 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     private var inputViewBottomConstraint: NSLayoutConstraint!
     private var inputContainerViewHeightConstraint: NSLayoutConstraint!
     
-    let fetchedResultsController: NSFetchedResultsController<Message> = {
+    lazy var fetchedResultsController: NSFetchedResultsController<Message> = {
         let fetchRequest = NSFetchRequest<Message>(entityName: "Message")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "profile.id = %ld", self.profile.id)
         let appDel = UIApplication.shared.delegate as! AppDelegate
         let context = appDel.persistentContainer.viewContext
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
         return frc
     }()
     
@@ -134,47 +139,38 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     
     @objc func sendMessage(){
         if let text = inputTextView.text, !text.isEmpty {
-            if let message = MessagesDataManager.shared.createMessage(text: text, profile: profile, date: Date(), isSender: true) {
-                messages?.append(message)
-                let item = messages!.count - 1
-                let newIndexPath = IndexPath(item: item, section: 0)
-                collectionView?.insertItems(at: [newIndexPath])
-                scrollToBottom()
-                inputTextView.text = ""
-                inputContainerViewHeightConstraint.constant = 56
-                inputTextViewNumberOfLines = 2
-            }
+            _ = MessagesDataManager.shared.createMessage(text: text, profile: profile, date: Date(), isSender: true)
+            inputTextView.text = ""
+            inputContainerViewHeightConstraint.constant = 56
+            inputTextViewNumberOfLines = 2
         }
         toggleSendButton()
     }
     
     // MARK: UICollectionViewDataSource
-
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let count = messages?.count {
+        if let count = fetchedResultsController.sections?[0].numberOfObjects {
             return count
         }
         return 0
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: chatBubbleCellId, for: indexPath) as! ChatBubbleCell
-        if let message = messages?[indexPath.row] {
-            cell.message = message
-            cell.bubbleWidthAnchor?.constant = estimateFrameFor(string: message.text!).width + 22
-            if cell.bubbleWidthAnchor!.constant < 42 {
-                cell.bubbleWidthAnchor!.constant = 42
-            }
+        let message = fetchedResultsController.object(at: indexPath)
+        cell.message = message
+        cell.bubbleWidthAnchor?.constant = estimateFrameFor(string: message.text!).width + 22
+        if cell.bubbleWidthAnchor!.constant < 42 {
+            cell.bubbleWidthAnchor!.constant = 42
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
-        if let message = messages?[indexPath.row] {
-            height = estimateFrameFor(string: message.text!).height
-        }
+        let message = fetchedResultsController.object(at: indexPath)
+        height = estimateFrameFor(string: message.text!).height
         let paddingConstraints: CGFloat = 6 + 1 + 12 + 4
         return CGSize(width: view.frame.width, height: height + paddingConstraints)
     }
@@ -189,8 +185,8 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     }
     
     func scrollToBottom(){
-        if messages!.count > 0 {
-            let indexPath = IndexPath(item: messages!.count - 1, section: 0)
+       if let count = fetchedResultsController.sections?[0].numberOfObjects, count > 0  {
+            let indexPath = IndexPath(item: count - 1, section: 0)
             collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
         }
     }
@@ -268,10 +264,7 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
             UIView.animate(withDuration: 0, animations: {
                 self.view.layoutIfNeeded()
             }) { (completed) in
-                if let count = self.messages?.count, count > 0 {
-                    let indexPath = IndexPath(item: self.messages!.count - 1, section: 0)
-                    self.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                }
+                self.scrollToBottom()
             }
         }
     }
@@ -307,6 +300,32 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
             sendButton.alpha = 0.25
         }
     }
+    
+    //MARK: Fetched Results Controller Delegate
+    
+    var blockOperations = [BlockOperation]()
+
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any,
+                    at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        if type == .insert {
+            blockOperations.append(BlockOperation(block: {
+                self.collectionView?.insertItems(at: [newIndexPath!])
+            }))
+            
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        collectionView?.performBatchUpdates({
+            for operation in self.blockOperations {
+                operation.start()
+            }
+        }, completion: { (completed) in
+           self.scrollToBottom()
+        })
+        
+    }
+    
 }
 
 
