@@ -266,15 +266,19 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        inputTextView.text = ""
-        inputTextView.textColor = .white
+        if inputTextView.textColor == .gray {
+            inputTextView.text = ""
+            inputTextView.textColor = .white
+        }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        inputTextView.text = "Type a message"
-        inputTextView.textColor = .gray
-        inputContainerViewHeightConstraint.constant = 56
-        inputTextViewNumberOfLines = 2
+        if inputTextView.text.isEmpty {
+            inputTextView.text = "Type a message"
+            inputTextView.textColor = .gray
+            inputContainerViewHeightConstraint.constant = 56
+            inputTextViewNumberOfLines = 2
+        }
     }
     
     func textViewDidChange(_ textView: UITextView) {
