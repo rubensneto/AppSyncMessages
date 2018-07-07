@@ -29,6 +29,7 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        _ = MessagesDataManager.shared
         do {
             try fetchedResultsController.performFetch()
         } catch let error {
@@ -39,10 +40,15 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView?.reloadData()
+    }
+    
     //MARK: Collection View
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let count = MessagesDataManager.shared.messages?.count {
+        if let count = fetchedResultsController.sections?[0].numberOfObjects {
             return count + 1
         }
         return 0
@@ -61,7 +67,7 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let controller = MessagesCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        controller.profile = MessagesDataManager.shared.messages![indexPath.row - 1].profile!
+        controller.profile = fetchedResultsController.object(at: IndexPath(row: indexPath.row - 1, section: 0))
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -81,6 +87,28 @@ class ConversationsController: UICollectionViewController, UICollectionViewDeleg
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 5
         collectionView?.collectionViewLayout = layout
+    }
+    
+    //MARK: Fetched Results Controller Delegate
+    
+    var blockOperations = [BlockOperation]()
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any,
+                    at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        if type == .insert {
+            blockOperations.append(BlockOperation(block: {
+                self.collectionView?.insertItems(at: [newIndexPath!])
+            }))
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        collectionView?.performBatchUpdates({
+            for operation in self.blockOperations {
+                operation.start()
+            }
+            collectionView?.reloadData()
+        })
     }
     
     //MARK: Navigation

@@ -245,13 +245,9 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         inputTextView.rightAnchor.constraint(equalTo: sendButton.leftAnchor, constant: -20).isActive = true
         inputTextView.topAnchor.constraint(equalTo: inputContainerView.topAnchor, constant: 10).isActive = true
         inputTextView.bottomAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: -10).isActive = true
-        
-        
     }
     
     //MARK: TextView & Keyboard Delegate
-    
-    
     
     @objc func keyboardWillChange(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
@@ -323,9 +319,7 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         }, completion: { (completed) in
            self.scrollToBottom()
         })
-        
     }
-    
 }
 
 

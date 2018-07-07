@@ -29,16 +29,16 @@ class ProfileDataManager: CoreDataManager {
         return nil
     }
     
-    func fetchProfiles() -> [Profile]? {
-        let fetchRequest = NSFetchRequest<Profile>(entityName: "Profile")
-        do {
-            let profiles = try context?.fetch(fetchRequest)
-            return profiles
-        } catch let error {
-            print(error)
-        }
-        return nil
-    }
+//    func fetchProfiles() -> [Profile]? {
+//        let fetchRequest = NSFetchRequest<Profile>(entityName: "Profile")
+//        do {
+//            let profiles = try context?.fetch(fetchRequest)
+//            return profiles
+//        } catch let error {
+//            print(error)
+//        }
+//        return nil
+//    }
     
     private func checkForExintingProfile(id: Int) -> Bool {
         let fetchRequest = NSFetchRequest<Profile>(entityName: "Profile")

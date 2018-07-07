@@ -20,7 +20,7 @@ class MessagesDataManager: CoreDataManager {
     override init(){
         super.init()
         
-        clear()
+        //clear()
         
         if let luiz = ProfileDataManager.shared.createProfile(name: "Luiz Mota", id: 11111, image: UIImage(named: "LoginBackground1")!, isOnline: true) {
             _ = createMessage(text: "We should be doing Unit Tests...", profile: luiz, date: Date(), isSender: false)
@@ -43,8 +43,6 @@ class MessagesDataManager: CoreDataManager {
             _ = createMessage(text: "Hey TiBo! Don't worry man, everything is gonna be alright, how can I help you?", profile: tibo, date: Date(timeInterval: -270, since: Date()), isSender: true)
             _ = createMessage(text: "I'm totally in pain for more than a month now and this fucking sucks!!! I'm not kidding, I'm gonna kill someone.", profile: tibo, date: Date(timeInterval: -300, since: Date()), isSender: false)
         }
-        
-        fetchMessagesInLocalStorage()
     }
     
     
@@ -75,24 +73,24 @@ class MessagesDataManager: CoreDataManager {
     
     //MARK: Fetch Methods
     
-    private func fetchMessagesInLocalStorage(){
-        if let profiles = ProfileDataManager.shared.fetchProfiles() {
-            for profile in profiles {
-                print(profile.name!)
-                let fetchRequest = NSFetchRequest<Message>(entityName: "Message")
-                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
-                fetchRequest.predicate = NSPredicate(format: "profile.id = %ld", profile.id)
-                fetchRequest.fetchLimit = 1
-                do {
-                    let fetchedMessages = try context!.fetch(fetchRequest)
-                    messages?.append(contentsOf: fetchedMessages)
-                } catch let error {
-                    print(error)
-                }
-            }
-        }
-        messages = messages?.sorted(by:{ $0.timestamp! > $1.timestamp!})
-    }
+//    private func fetchMessagesInLocalStorage(){
+//        if let profiles = ProfileDataManager.shared.fetchProfiles() {
+//            for profile in profiles {
+//                print(profile.name!)
+//                let fetchRequest = NSFetchRequest<Message>(entityName: "Message")
+//                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
+//                fetchRequest.predicate = NSPredicate(format: "profile.id = %ld", profile.id)
+//                fetchRequest.fetchLimit = 1
+//                do {
+//                    let fetchedMessages = try context!.fetch(fetchRequest)
+//                    messages?.append(contentsOf: fetchedMessages)
+//                } catch let error {
+//                    print(error)
+//                }
+//            }
+//        }
+//        messages = messages?.sorted(by:{ $0.timestamp! > $1.timestamp!})
+//    }
     
     private func checkForExintingMessage(id: String) -> Bool {
         let fetchRequest = NSFetchRequest<Message>(entityName: "Message")
