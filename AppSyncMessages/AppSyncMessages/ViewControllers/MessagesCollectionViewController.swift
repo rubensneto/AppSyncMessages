@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AWSAppSync
 
 private let reuseIdentifier = "Cell"
 
@@ -15,7 +16,8 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     
     var senderId: Int!
     private let chatBubbleCellId = "chatBubbleCellId"
-    
+    var appSyncClient: AWSAppSyncClient?
+    let appSyncService = AppSyncService()
     
     var profile: Profile! {
         didSet{
@@ -120,6 +122,8 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
         setupInputComponents()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange), name: .UIKeyboardWillHide, object: nil)
+        let appDel = UIApplication.shared.delegate as! AppDelegate
+        appSyncClient = appDel.appSyncClient!
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -139,7 +143,7 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
     
     @objc func sendMessage(){
         if let text = inputTextView.text, !text.isEmpty {
-            _ = MessagesDataManager.shared.createMessage(text: text, profile: profile, date: Date(), isSender: true)
+            MessagesDataManager.shared.createMessage(text: text, profile: profile, date: Date(), isSender: true)
             inputTextView.text = ""
             inputContainerViewHeightConstraint.constant = 56
             inputTextViewNumberOfLines = 2
@@ -321,7 +325,10 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
                 operation.start()
             }
         }, completion: { (completed) in
-           self.scrollToBottom()
+            self.scrollToBottom()
+            if let message = controller.fetchedObjects?.last as? Message {
+                self.appSyncService.addMessageOnAppSync(id: message.id!, text: message.text!, timestamp: String(describing: message.timestamp!))
+            }
         })
     }
 }
