@@ -28,6 +28,9 @@
 		D0F6D0C820ED1E69004E7E2F /* ProfileDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F6D0C720ED1E69004E7E2F /* ProfileDataManager.swift */; };
 		D0F6D0CA20ED1FED004E7E2F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F6D0C920ED1FED004E7E2F /* CoreDataManager.swift */; };
 		D0F6D0CE20EE4ED3004E7E2F /* UITextViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0F6D0CD20EE4ED3004E7E2F /* UITextViewExtension.swift */; };
+		D0F6D0D020F399D1004E7E2F /* messages.graphql in Resources */ = {isa = PBXBuildFile; fileRef = D0F6D0CF20F399D1004E7E2F /* messages.graphql */; };
+		D0F6D0D820F61BE4004E7E2F /* AppSync.json in Resources */ = {isa = PBXBuildFile; fileRef = D0F6D0D620F61BE3004E7E2F /* AppSync.json */; };
+		D0F6D0D920F61BE4004E7E2F /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = D0F6D0D720F61BE3004E7E2F /* schema.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +78,9 @@
 		D0F6D0C720ED1E69004E7E2F /* ProfileDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataManager.swift; sourceTree = "<group>"; };
 		D0F6D0C920ED1FED004E7E2F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		D0F6D0CD20EE4ED3004E7E2F /* UITextViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewExtension.swift; sourceTree = "<group>"; };
+		D0F6D0CF20F399D1004E7E2F /* messages.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = messages.graphql; sourceTree = "<group>"; };
+		D0F6D0D620F61BE3004E7E2F /* AppSync.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AppSync.json; sourceTree = "<group>"; };
+		D0F6D0D720F61BE3004E7E2F /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				D0AA6E4620E100780068B02B /* AppSyncMessages */,
+				D0F6D0D120F399F2004E7E2F /* GraphQLOperations */,
 				D0AA6E5E20E1007A0068B02B /* AppSyncMessagesTests */,
 				D0AA6E6920E1007A0068B02B /* AppSyncMessagesUITests */,
 				D0AA6E4520E100780068B02B /* Products */,
@@ -205,6 +212,16 @@
 				D0AA6E8C20E25C380068B02B /* ConversationCellViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		D0F6D0D120F399F2004E7E2F /* GraphQLOperations */ = {
+			isa = PBXGroup;
+			children = (
+				D0F6D0CF20F399D1004E7E2F /* messages.graphql */,
+				D0F6D0D620F61BE3004E7E2F /* AppSync.json */,
+				D0F6D0D720F61BE3004E7E2F /* schema.json */,
+			);
+			path = GraphQLOperations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,7 +329,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0AA6E5520E1007A0068B02B /* LaunchScreen.storyboard in Resources */,
+				D0F6D0D920F61BE4004E7E2F /* schema.json in Resources */,
 				D0AA6E5220E1007A0068B02B /* Assets.xcassets in Resources */,
+				D0F6D0D820F61BE4004E7E2F /* AppSync.json in Resources */,
+				D0F6D0D020F399D1004E7E2F /* messages.graphql in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

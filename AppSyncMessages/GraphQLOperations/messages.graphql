@@ -1,0 +1,94 @@
+query GetProfile($id:Int!) {
+getProfile(id:$id) {
+id
+name
+profileImage
+isOnline
+}
+}
+
+query GetMessage($id:String!) {
+getMessage(id:$id) {
+id
+text
+timestamp
+}
+}
+
+query GetConversation($id:String!) {
+getConversation(id:$id) {
+id
+messages {
+id
+text
+timestamp
+}
+}
+}
+
+query AllProfiles {
+listProfiles {
+items {
+id
+name
+profileImage
+isOnline
+}
+}
+}
+
+query AllMessages {
+listMessages {
+items {
+id
+text
+timestamp
+}
+}
+}
+
+query AllConversations {
+listConversations {
+items {
+id
+messages {
+id
+text
+timestamp
+}
+}
+}
+}
+
+mutation AddMessage($input: CreateMessageInput!) {
+createMessage(input: $input) {
+id
+text
+timestamp
+}
+}
+
+mutation UpdateConversation($input: UpdateConversationInput!) {
+updateConversation(input: $input) {
+id
+messages {
+id
+text
+timestamp
+}
+}
+}
+
+subscription OnUpdateConversation {
+onUpdateConversation {
+id
+messages {
+id
+text
+timestamp
+}
+}
+}
+
+
+

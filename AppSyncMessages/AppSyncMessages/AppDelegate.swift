@@ -6,6 +6,9 @@
 //  Copyright © 2018 T101. All rights reserved.
 //
 
+// API URL: https://srnwmkaydbbyhizxprhcbcdso4.appsync-api.eu-west-1.amazonaws.com/graphql
+
+
 import UIKit
 import CoreData
 
