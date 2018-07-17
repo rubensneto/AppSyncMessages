@@ -35,4 +35,67 @@ class AppSyncService {
             }
         }
     }
+    
+    func createConversationOnAppSync(senderId: Int, receiverId: Int, messageId: String){
+        let conversation = ApiConversationModel(senderId: senderId, receiverId: receiverId, messageId: messageId)
+        let mutationInput = CreateConversationInput(id: conversation.id, messageIds: [messageId])
+        let mutation = CreateConversationMutation(input: mutationInput)
+        
+        appSyncClient.perform(mutation: mutation, optimisticUpdate: { (transaction) in
+            do {
+                try transaction?.update(query: AllConversationsQuery()) { (data: inout AllConversationsQuery.Data) in
+                    data.listConversations?.items?.append(AllConversationsQuery.Data.ListConversation.Item.init(id: conversation.id, messageIds: [messageId]))
+                }
+            } catch {
+                print("Error updating AppSync Response")
+            }
+        }) { (result, error) in
+            if let error = error as? AWSAppSyncClientError {
+                print("Error occurred: \(error.localizedDescription )")
+                return
+            }
+        }
+    }
+    
+    func updateConversationOnAppSync(senderId: Int, receiverId: Int, messageId: String){
+        let conversation = ApiConversationModel(senderId: senderId, receiverId: receiverId, messageId: messageId)
+        let mutation = UpdateConversationMessagesMutation(id: conversation.id, messageId: conversation.messageIds!.last)
+        
+        appSyncClient.perform(mutation: mutation, optimisticUpdate: { (transaction) in
+            do {
+                try transaction?.update(query: AllConversationsQuery(), { (data: inout AllConversationsQuery.Data) in
+                     data.listConversations?.items?.append(AllConversationsQuery.Data.ListConversation.Item.init(id: conversation.id, messageIds: [messageId]))
+                })
+//                try transaction?.update(query: AllConversationsQuery()) { (data: inout AllConversationsQuery.Data) in
+//                    data.listConversations?.items?.append(AllConversationsQuery.Data.ListConversation.Item.init(id: conversation.id, messageIds: [messageId]))
+//                }
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }) { (result, error) in
+            if let error = error as? AWSAppSyncClientError {
+                print("Error occurred: \(error.localizedDescription )")
+                return
+            }
+        }
+    }
+    
+    func subscribeToConversation(senderId: Int, receiverId: Int, messageId: String){
+        let conversation = ApiConversationModel(senderId: senderId, receiverId: receiverId, messageId: messageId)
+        let subscription = OnUpdateConversationSubscription()
+        //appSyncClient.subscribe(subscription: <#T##GraphQLSubscription#>, resultHandler: <#T##(GraphQLResult<GraphQLSelectionSet>?, ApolloStore.ReadWriteTransaction?, Error?) -> Void#>)
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

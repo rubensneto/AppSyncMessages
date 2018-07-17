@@ -18,11 +18,7 @@ timestamp
 query GetConversation($id:String!) {
 getConversation(id:$id) {
 id
-messages {
-id
-text
-timestamp
-}
+messageIds
 }
 }
 
@@ -51,11 +47,7 @@ query AllConversations {
 listConversations {
 items {
 id
-messages {
-id
-text
-timestamp
-}
+messageIds
 }
 }
 }
@@ -68,25 +60,31 @@ timestamp
 }
 }
 
+mutation CreateConversation($input: CreateConversationInput!) {
+createConversation(input: $input) {
+id
+messageIds
+}
+}
+
 mutation UpdateConversation($input: UpdateConversationInput!) {
 updateConversation(input: $input) {
 id
-messages {
-id
-text
-timestamp
+messageIds
 }
+}
+
+mutation UpdateConversationMessages($id: String!, $messageId: String) {
+updateConversationMessages(id: $id, messageId: $messageId) {
+id
+messageIds
 }
 }
 
 subscription OnUpdateConversation {
 onUpdateConversation {
 id
-messages {
-id
-text
-timestamp
-}
+messageIds
 }
 }
 

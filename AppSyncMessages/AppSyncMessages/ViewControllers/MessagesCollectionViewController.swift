@@ -328,6 +328,15 @@ class MessagesCollectionViewController: UICollectionViewController, UICollection
             self.scrollToBottom()
             if let message = controller.fetchedObjects?.last as? Message {
                 self.appSyncService.addMessageOnAppSync(id: message.id!, text: message.text!, timestamp: String(describing: message.timestamp!))
+                var counter = 0
+                for object in controller.fetchedObjects! {
+                    if let message = object as? Message, message.isSender {
+                        counter += 1
+                    }
+                }
+                counter > 1 ?
+                    (self.appSyncService.updateConversationOnAppSync(senderId: self.senderId, receiverId: Int(self.profile.id), messageId: message.id!)) :
+                    (self.appSyncService.createConversationOnAppSync(senderId: self.senderId, receiverId: Int(self.profile.id), messageId: message.id!))
             }
         })
     }

@@ -1,4 +1,4 @@
-﻿{
+{
     "data": {
         "__schema": {
             "queryType": {
@@ -462,15 +462,15 @@
                             "deprecationReason": null
                         },
                         {
-                            "name": "messages",
+                            "name": "messageIds",
                             "description": null,
                             "args": [],
                             "type": {
                                 "kind": "LIST",
                                 "name": null,
                                 "ofType": {
-                                    "kind": "OBJECT",
-                                    "name": "Message",
+                                    "kind": "SCALAR",
+                                    "name": "String",
                                     "ofType": null
                                 }
                             },
@@ -758,6 +758,43 @@
                                             "name": "DeleteConversationInput",
                                             "ofType": null
                                         }
+                                    },
+                                    "defaultValue": null
+                                }
+                            ],
+                            "type": {
+                                "kind": "OBJECT",
+                                "name": "Conversation",
+                                "ofType": null
+                            },
+                            "isDeprecated": false,
+                            "deprecationReason": null
+                        },
+                        {
+                            "name": "updateConversationMessages",
+                            "description": null,
+                            "args": [
+                                {
+                                    "name": "id",
+                                    "description": null,
+                                    "type": {
+                                        "kind": "NON_NULL",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "String",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "messageId",
+                                    "description": null,
+                                    "type": {
+                                        "kind": "SCALAR",
+                                        "name": "String",
+                                        "ofType": null
                                     },
                                     "defaultValue": null
                                 }
@@ -1061,6 +1098,20 @@
                                 }
                             },
                             "defaultValue": null
+                        },
+                        {
+                            "name": "messageIds",
+                            "description": null,
+                            "type": {
+                                "kind": "LIST",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            },
+                            "defaultValue": null
                         }
                     ],
                     "interfaces": null,
@@ -1078,6 +1129,20 @@
                             "description": null,
                             "type": {
                                 "kind": "NON_NULL",
+                                "name": null,
+                                "ofType": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                }
+                            },
+                            "defaultValue": null
+                        },
+                        {
+                            "name": "messageIds",
+                            "description": null,
+                            "type": {
+                                "kind": "LIST",
                                 "name": null,
                                 "ofType": {
                                     "kind": "SCALAR",
@@ -1423,6 +1488,20 @@
                                         "ofType": null
                                     },
                                     "defaultValue": null
+                                },
+                                {
+                                    "name": "messageIds",
+                                    "description": null,
+                                    "type": {
+                                        "kind": "LIST",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "String",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
                                 }
                             ],
                             "type": {
@@ -1446,6 +1525,20 @@
                                         "ofType": null
                                     },
                                     "defaultValue": null
+                                },
+                                {
+                                    "name": "messageIds",
+                                    "description": null,
+                                    "type": {
+                                        "kind": "LIST",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "String",
+                                            "ofType": null
+                                        }
+                                    },
+                                    "defaultValue": null
                                 }
                             ],
                             "type": {
@@ -1467,6 +1560,20 @@
                                         "kind": "SCALAR",
                                         "name": "String",
                                         "ofType": null
+                                    },
+                                    "defaultValue": null
+                                },
+                                {
+                                    "name": "messageIds",
+                                    "description": null,
+                                    "type": {
+                                        "kind": "LIST",
+                                        "name": null,
+                                        "ofType": {
+                                            "kind": "SCALAR",
+                                            "name": "String",
+                                            "ofType": null
+                                        }
                                     },
                                     "defaultValue": null
                                 }
